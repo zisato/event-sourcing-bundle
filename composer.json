@@ -1,0 +1,43 @@
+{
+  "name": "zisato/event-sourcing-bundle",
+  "description": "EventSourcing Bundle",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Javier Rodriguez",
+      "email": "javierrodriguezcuevas@gmail.com"
+    }
+  ],
+  "config": {
+    "preferred-install": {
+      "*": "dist"
+    },
+    "sort-packages": true,
+    "bin-dir": "bin"
+  },
+  "autoload": {
+    "psr-4": {
+      "Zisato\\EventSourcingBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Zisato\\EventSourcingBundle\\Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "php": "^8.1",
+    "zisato/event-sourcing": "@dev",
+    "symfony/console": "^6.3",
+    "symfony/framework-bundle": "^6.3"
+  },
+  "require-dev": {
+    "matthiasnoback/symfony-config-test": "^4.3",
+    "matthiasnoback/symfony-dependency-injection-test": "^4.3",
+    "phpstan/phpstan": "^1.10",
+    "phpunit/phpcov": "^9.0",
+    "phpunit/phpunit": "^10.2",
+    "rector/rector": "^0.17.0",
+    "symfony/yaml": "^6.3"
+  }
+}

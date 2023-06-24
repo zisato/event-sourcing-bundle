@@ -1,0 +1,39 @@
+version: "3.7"
+services:
+  php-cli:
+    build:
+      context: ./php-8.1
+      target: php-cli
+    environment:
+      - APP_ENV=dev
+      - APP_DEBUG=false
+      - APP_SECRET=7e7e05f63041d6f89d2aada4c5ea41bc
+    volumes:
+      - ../:/var/www:delegated
+    working_dir: /var/www/
+
+  php-cli-pcov:
+    build:
+      context: ./php-8.1
+      target: php-cli-pcov
+    environment:
+      - APP_ENV=dev
+      - APP_DEBUG=false
+      - APP_SECRET=7e7e05f63041d6f89d2aada4c5ea41bc
+    volumes:
+      - ../:/var/www:delegated
+    working_dir: /var/www/
+
+  php-cli-xdebug:
+    build:
+      context: ./php-8.1
+      target: php-cli-xdebug
+    environment:
+      - APP_ENV=dev
+      - APP_DEBUG=false
+      - APP_SECRET=7e7e05f63041d6f89d2aada4c5ea41bc
+      - XDEBUG_MODE=debug
+      - XDEBUG_CONFIG=client_host=host.docker.internal client_port=9003
+    volumes:
+      - ../:/var/www:delegated
+    working_dir: /var/www/
