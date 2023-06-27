@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Zisato\EventSourcing\Aggregate\Event\AbstractEvent;
-use Zisato\EventSourcingBundle\Infrastructure\EventSourcing\Aggregate\Event\Upcast\EventUpcasterChain;
+use Zisato\EventSourcingBundle\Infrastructure\EventSourcing\Aggregate\Event\Upcast\EventUpcasterGroupCollectionChain;
 use Zisato\EventSourcingBundle\Infrastructure\EventSourcing\Aggregate\Event\Upcast\EventUpcasterGroup;
 use Zisato\EventSourcingBundle\Infrastructure\EventSourcing\Aggregate\Event\Upcast\EventUpcasterGroupCollection;
 use Zisato\EventSourcing\Aggregate\Event\Bus\EventBusInterface;
@@ -146,7 +146,7 @@ final class AggregateConfigDefinitionPass implements CompilerPassInterface
             $upcasterGroups[] = new Definition(EventUpcasterGroup::class, [$eventName, ...$upcasters]);
         }
 
-        $upcasterChain = new Definition(EventUpcasterChain::class, [
+        $upcasterChain = new Definition(EventUpcasterGroupCollectionChain::class, [
             new Definition(EventUpcasterGroupCollection::class, $upcasterGroups),
         ]);
 

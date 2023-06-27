@@ -1,11 +1,11 @@
 <?php
 
-namespace Zisato\ApiBundle\Infrastructure\EventSourcing\Aggregate\Event\Upcast;
+namespace Zisato\EventSourcingBundle\Infrastructure\EventSourcing\Aggregate\Event\Upcast;
 
 use Zisato\EventSourcing\Aggregate\Event\EventInterface;
 use Zisato\EventSourcing\Aggregate\Event\Upcast\UpcasterInterface;
 
-final class EventUpcasterChain implements UpcasterInterface
+final class EventUpcasterGroupCollectionChain implements UpcasterInterface
 {
     public function __construct(private readonly EventUpcasterGroupCollection $eventUpcasterGroupCollection) {}
 

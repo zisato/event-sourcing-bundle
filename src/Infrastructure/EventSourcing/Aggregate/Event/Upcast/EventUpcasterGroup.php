@@ -1,6 +1,6 @@
 <?php
 
-namespace Zisato\ApiBundle\Infrastructure\EventSourcing\Aggregate\Event\Upcast;
+namespace Zisato\EventSourcingBundle\Infrastructure\EventSourcing\Aggregate\Event\Upcast;
 
 use Zisato\EventSourcing\Aggregate\Event\Upcast\UpcasterInterface;
 
