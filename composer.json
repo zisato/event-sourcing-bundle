@@ -25,6 +25,12 @@
       "Zisato\\EventSourcingBundle\\Tests\\": "tests/"
     }
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/zisato/event-sourcing"
+    }
+  ],
   "require": {
     "php": "^8.1",
     "zisato/event-sourcing": "@dev",

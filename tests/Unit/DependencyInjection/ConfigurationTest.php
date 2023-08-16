@@ -6,9 +6,10 @@ use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
 use PHPUnit\Framework\TestCase;
 use Zisato\EventSourcing\Aggregate\AggregateRootInterface;
 use Zisato\EventSourcing\Aggregate\Event\EventInterface;
-use Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\CryptoPrivateDataPayloadService;
-use Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\PrivateDataPayloadServiceInterface;
+use Zisato\EventSourcing\Aggregate\Event\PrivateData\Adapter\CryptoPayloadEncoderAdapter;
+use Zisato\EventSourcing\Aggregate\Event\PrivateData\Adapter\PayloadEncoderAdapterInterface;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\ValueObject\Payload;
+use Zisato\EventSourcing\Aggregate\Event\PrivateData\ValueObject\PayloadKeyCollection;
 use Zisato\EventSourcing\Aggregate\Event\Version\StaticMethodVersionResolver;
 use Zisato\EventSourcing\Aggregate\Event\Version\VersionResolverInterface;
 use Zisato\EventSourcing\Aggregate\Snapshot\Service\SnapshotServiceInterface;
@@ -71,7 +72,7 @@ class ConfigurationTest extends TestCase
                     'service' => SynchronousSnapshotService::class,
                 ],
                 'private_data' => [
-                    'payload_service' => CryptoPrivateDataPayloadService::class,
+                    'payload_encoder' => CryptoPayloadEncoderAdapter::class,
                 ],
             ]
         );
@@ -104,7 +105,7 @@ class ConfigurationTest extends TestCase
                     'service' => SynchronousSnapshotService::class,
                 ],
                 'private_data' => [
-                    'payload_service' => CryptoPrivateDataPayloadService::class,
+                    'payload_encoder' => CryptoPayloadEncoderAdapter::class,
                 ],
             ]
         );
@@ -137,7 +138,7 @@ class ConfigurationTest extends TestCase
                     'service' => SynchronousSnapshotService::class,
                 ],
                 'private_data' => [
-                    'payload_service' => CryptoPrivateDataPayloadService::class,
+                    'payload_encoder' => CryptoPayloadEncoderAdapter::class,
                 ],
             ]
         );
@@ -167,21 +168,26 @@ class ConfigurationTest extends TestCase
                     'service' => $snapshotService::class,
                 ],
                 'private_data' => [
-                    'payload_service' => CryptoPrivateDataPayloadService::class,
+                    'payload_encoder' => CryptoPayloadEncoderAdapter::class,
                 ],
             ]
         );
     }
 
-    public function testProcessPrivateDataPayloadServiceValue(): void
+    public function testProcessPayloadEncoderrValue(): void
     {
-        $privateDataPayloadService = new class implements PrivateDataPayloadServiceInterface {
-            public function hide(Payload $payload): array
+        $payloadEncoderAdapter = new class implements PayloadEncoderAdapterInterface {
+            public function show(string $aggregateId, PayloadKeyCollection $payloadKeyCollection, array $payload): array
             {
                 return [];
             }
 
-            public function show(Payload $payload): array
+            public function hide(string $aggregateId, PayloadKeyCollection $payloadKeyCollection, array $payload): array
+            {
+                return [];
+            }
+
+            public function forget(string $aggregateId, PayloadKeyCollection $payloadKeyCollection, array $payload): array
             {
                 return [];
             }
@@ -191,7 +197,7 @@ class ConfigurationTest extends TestCase
             [
                 [
                     'private_data' => [
-                        'payload_service' => $privateDataPayloadService::class,
+                        'payload_encoder' => $payloadEncoderAdapter::class,
                     ]
                 ]
             ],
@@ -205,7 +211,7 @@ class ConfigurationTest extends TestCase
                     'service' => SynchronousSnapshotService::class,
                 ],
                 'private_data' => [
-                    'payload_service' => $privateDataPayloadService::class,
+                    'payload_encoder' => $payloadEncoderAdapter::class,
                 ],
             ]
         );

@@ -3,19 +3,19 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Doctrine\DBAL\Connection;
+use Zisato\EventSourcing\Aggregate\Event\PrivateData\Crypto\CryptoInterface;
+use Zisato\EventSourcing\Aggregate\Event\PrivateData\Crypto\OpenSSLCrypto;
+use Zisato\EventSourcing\Aggregate\Event\PrivateData\Crypto\SecretKeyStoreInterface;
+use Zisato\EventSourcing\Aggregate\Event\PrivateData\Repository\PrivateDataRepositoryInterface;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Serializer\JsonPayloadValueSerializer;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Serializer\PayloadValueSerializerInterface;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\CryptoPrivateDataPayloadService;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\ExternalPrivateDataPayloadService;
+use Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\PrivateDataEventPayloadService;
+use Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\PrivateDataEventServiceInterface;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\PrivateDataPayloadServiceInterface;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Strategy\PayloadKeyCollectionByEventInterface;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Strategy\PayloadKeyCollectionStrategyInterface;
-use Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\PrivateDataEventServiceInterface;
-use Zisato\EventSourcing\Aggregate\Event\PrivateData\Crypto\CryptoInterface;
-use Zisato\EventSourcing\Aggregate\Event\PrivateData\Crypto\SecretKeyStoreInterface;
-use Zisato\EventSourcing\Aggregate\Event\PrivateData\Crypto\OpenSSLCrypto;
-use Zisato\EventSourcing\Aggregate\Event\PrivateData\Repository\PrivateDataRepositoryInterface;
-use Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\PrivateDataEventPayloadService;
 use Zisato\EventSourcing\Infrastructure\Aggregate\Event\PrivateData\Crypto\DBALSecretKeyStore;
 use Zisato\EventSourcing\Infrastructure\Aggregate\Event\PrivateData\Repository\DBALPrivateDataRepository;
 

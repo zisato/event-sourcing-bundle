@@ -10,5 +10,5 @@ event_sourcing:
         strategy: Zisato\EventSourcing\Aggregate\Snapshot\Strategy\AggregateRootVersionSnapshotStrategy
         service: Zisato\EventSourcing\Aggregate\Snapshot\Service\SynchronousSnapshotService
     private_data:
-        payload_service: Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\CryptoPrivateDataPayloadService
+        payload_encoder: Zisato\EventSourcing\Aggregate\Event\PrivateData\Adapter\CryptoPrivateDataPayloadService
 ```

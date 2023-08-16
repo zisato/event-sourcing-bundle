@@ -7,8 +7,8 @@ namespace Zisato\EventSourcingBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\ParentNodeDefinitionInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\CryptoPrivateDataPayloadService;
-use Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\PrivateDataPayloadServiceInterface;
+use Zisato\EventSourcing\Aggregate\Event\PrivateData\Adapter\CryptoPayloadEncoderAdapter;
+use Zisato\EventSourcing\Aggregate\Event\PrivateData\Adapter\PayloadEncoderAdapterInterface;
 use Zisato\EventSourcing\Aggregate\Event\Version\StaticMethodVersionResolver;
 use Zisato\EventSourcing\Aggregate\Event\Version\VersionResolverInterface;
 use Zisato\EventSourcing\Aggregate\Snapshot\Service\SnapshotServiceInterface;
@@ -82,15 +82,15 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('private_data')
                     ->addDefaultsIfNotSet()
                         ->children()
-                        ->scalarNode('payload_service')
-                            ->info('The private data payload service')
-                            ->defaultValue(CryptoPrivateDataPayloadService::class)
+                        ->scalarNode('payload_encoder')
+                            ->info('The private data payload encoder')
+                            ->defaultValue(CryptoPayloadEncoderAdapter::class)
                             ->validate()
                                 ->ifTrue(static function ($value): bool {
-                                    return ! is_a($value, PrivateDataPayloadServiceInterface::class, true);
+                                    return ! is_a($value, PayloadEncoderAdapterInterface::class, true);
                                 })
                                 ->thenInvalid(
-                                    sprintf('private_data.payload_service must implement %s', PrivateDataPayloadServiceInterface::class)
+                                    sprintf('private_data.payload_encoder must implement %s', PayloadEncoderAdapterInterface::class)
                                 )
                             ->end()
                         ->end()

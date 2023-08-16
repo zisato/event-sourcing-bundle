@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Zisato\EventSourcing\Aggregate\AbstractAggregateRoot;
 use Zisato\EventSourcing\Aggregate\Event\Decorator\EventDecoratorInterface;
-use Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\PrivateDataPayloadServiceInterface;
+use Zisato\EventSourcing\Aggregate\Event\PrivateData\Adapter\PayloadEncoderAdapterInterface;
 use Zisato\EventSourcing\Aggregate\Event\Upcast\UpcasterInterface;
 use Zisato\EventSourcing\Aggregate\Event\Version\VersionResolverInterface;
 use Zisato\EventSourcing\Aggregate\Repository\AggregateRootRepository;
@@ -58,8 +58,7 @@ final class EventSourcingExtension extends ConfigurableExtension
         $container->setAlias(VersionResolverInterface::class, $mergedConfig['event']['version_resolver']);
         $container->setAlias(SnapshotStrategyInterface::class, $mergedConfig['snapshot']['strategy']);
         $container->setAlias(SnapshotServiceInterface::class, $mergedConfig['snapshot']['service']);
-
-        $container->setAlias(PrivateDataPayloadServiceInterface::class, $mergedConfig['private_data']['payload_service']);
+        $container->setAlias(PayloadEncoderAdapterInterface::class, $mergedConfig['private_data']['payload_encoder']);
 
         $container->registerForAutoconfiguration(EventDecoratorInterface::class)
             ->addTag(self::TAG_EVENT_DECORATOR);
