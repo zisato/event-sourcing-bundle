@@ -11,9 +11,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Zisato\EventSourcing\Aggregate\Event\AbstractEvent;
-use Zisato\EventSourcingBundle\Infrastructure\EventSourcing\Aggregate\Event\Upcast\EventUpcasterGroupCollectionChain;
-use Zisato\EventSourcingBundle\Infrastructure\EventSourcing\Aggregate\Event\Upcast\EventUpcasterGroup;
-use Zisato\EventSourcingBundle\Infrastructure\EventSourcing\Aggregate\Event\Upcast\EventUpcasterGroupCollection;
 use Zisato\EventSourcing\Aggregate\Event\Bus\EventBusInterface;
 use Zisato\EventSourcing\Aggregate\Event\Decorator\EventDecoratorInterface;
 use Zisato\EventSourcing\Aggregate\Event\EventInterface;
@@ -25,6 +22,9 @@ use Zisato\EventSourcing\Aggregate\Repository\AggregateRootRepository;
 use Zisato\EventSourcing\Aggregate\Repository\AggregateRootRepositoryWithSnapshot;
 use Zisato\EventSourcing\Aggregate\Snapshot\SnapshotterInterface;
 use Zisato\EventSourcing\Infrastructure\Aggregate\Event\Store\DBALEventStore;
+use Zisato\EventSourcingBundle\Infrastructure\EventSourcing\Aggregate\Event\Upcast\EventUpcasterGroup;
+use Zisato\EventSourcingBundle\Infrastructure\EventSourcing\Aggregate\Event\Upcast\EventUpcasterGroupCollection;
+use Zisato\EventSourcingBundle\Infrastructure\EventSourcing\Aggregate\Event\Upcast\EventUpcasterGroupCollectionChain;
 
 final class AggregateConfigDefinitionPass implements CompilerPassInterface
 {
@@ -87,11 +87,12 @@ final class AggregateConfigDefinitionPass implements CompilerPassInterface
         if ($repositoryReflection->isSubclassOf(AggregateRootRepository::class)) {
             $repositoryDefinition = $container->findDefinition($config['repository']);
             $eventBus = $container->hasDefinition(EventBusInterface::class) ? new Reference(EventBusInterface::class) : null;
+            $eventDecorator = $container->hasDefinition(EventDecoratorInterface::class) ? new Reference(EventDecoratorInterface::class) : null;
 
             $repositoryDefinition->setArguments([
                 $config['class'],
                 new Reference(\sprintf('event_sourcing_bundle.event_store.%s', $config['class'])),
-                new Reference(EventDecoratorInterface::class),
+                $eventDecorator,
                 $eventBus,
             ]);
         }
@@ -99,11 +100,12 @@ final class AggregateConfigDefinitionPass implements CompilerPassInterface
         if ($repositoryReflection->isSubclassOf(AggregateRootRepositoryWithSnapshot::class)) {
             $repositoryDefinition = new Definition(AggregateRootRepository::class);
             $eventBus = $container->hasDefinition(EventBusInterface::class) ? new Reference(EventBusInterface::class) : null;
+            $eventDecorator = $container->hasDefinition(EventDecoratorInterface::class) ? new Reference(EventDecoratorInterface::class) : null;
 
             $repositoryDefinition->setArguments([
                 $config['class'],
                 new Reference(\sprintf('event_sourcing_bundle.event_store.%s', $config['class'])),
-                new Reference(EventDecoratorInterface::class),
+                $eventDecorator,
                 $eventBus,
             ]);
 

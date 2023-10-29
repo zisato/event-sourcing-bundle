@@ -5,15 +5,15 @@ namespace Zisato\EventSourcingBundle\Tests\Unit\DependencyInjection;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Zisato\EventSourcing\Aggregate\Event\Decorator\EventDecoratorChain;
 use Zisato\EventSourcing\Aggregate\Event\Decorator\EventDecoratorInterface;
+use Zisato\EventSourcing\Aggregate\Event\PrivateData\Adapter\CryptoPayloadEncoderAdapter;
+use Zisato\EventSourcing\Aggregate\Event\PrivateData\Adapter\ExternalPayloadEncoderAdapter;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Crypto\CryptoInterface;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Crypto\OpenSSLCrypto;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Crypto\SecretKeyStoreInterface;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Repository\PrivateDataRepositoryInterface;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Serializer\JsonPayloadValueSerializer;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Serializer\PayloadValueSerializerInterface;
-use Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\CryptoPrivateDataPayloadService;
-use Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\ExternalPrivateDataPayloadService;
-use Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\PrivateDataEventPayloadService;
+use Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\PrivateDataEventService;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Service\PrivateDataEventServiceInterface;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Strategy\PayloadKeyCollectionByEventInterface;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Strategy\PayloadKeyCollectionStrategyInterface;
@@ -100,7 +100,7 @@ class EventSourcingExtensionTest extends AbstractExtensionTestCase
                 OpenSSLCrypto::class,
             ],
             [
-                PrivateDataEventPayloadService::class,
+                PrivateDataEventService::class,
             ],
             [
                 JsonPayloadValueSerializer::class,
@@ -111,10 +111,10 @@ class EventSourcingExtensionTest extends AbstractExtensionTestCase
             ],
             */
             [
-                ExternalPrivateDataPayloadService::class,
+                ExternalPayloadEncoderAdapter::class,
             ],
             [
-                CryptoPrivateDataPayloadService::class,
+                CryptoPayloadEncoderAdapter::class,
             ],
         ];
     }

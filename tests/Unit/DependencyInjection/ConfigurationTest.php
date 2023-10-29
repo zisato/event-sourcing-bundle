@@ -8,7 +8,6 @@ use Zisato\EventSourcing\Aggregate\AggregateRootInterface;
 use Zisato\EventSourcing\Aggregate\Event\EventInterface;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Adapter\CryptoPayloadEncoderAdapter;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\Adapter\PayloadEncoderAdapterInterface;
-use Zisato\EventSourcing\Aggregate\Event\PrivateData\ValueObject\Payload;
 use Zisato\EventSourcing\Aggregate\Event\PrivateData\ValueObject\PayloadKeyCollection;
 use Zisato\EventSourcing\Aggregate\Event\Version\StaticMethodVersionResolver;
 use Zisato\EventSourcing\Aggregate\Event\Version\VersionResolverInterface;

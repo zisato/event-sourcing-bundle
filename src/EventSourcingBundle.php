@@ -18,6 +18,6 @@ final class EventSourcingBundle extends Bundle
 
         $container->addCompilerPass(new AggregateAutoConfigPass());
         $container->addCompilerPass(new AggregateConfigDefinitionPass());
-        // $container->addCompilerPass(new EventDecoratorPass());
+        $container->addCompilerPass(new EventDecoratorPass());
     }
 }
