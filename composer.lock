@@ -2525,12 +2525,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zisato/event-sourcing.git",
-                "reference": "4c129e7a8cff13a38279cf03c68b8d5660db0da6"
+                "reference": "e6ee773a6d0d78418cc70f21ad4edb1b6c23de62"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zisato/event-sourcing/zipball/4c129e7a8cff13a38279cf03c68b8d5660db0da6",
-                "reference": "4c129e7a8cff13a38279cf03c68b8d5660db0da6",
+                "url": "https://api.github.com/repos/zisato/event-sourcing/zipball/e6ee773a6d0d78418cc70f21ad4edb1b6c23de62",
+                "reference": "e6ee773a6d0d78418cc70f21ad4edb1b6c23de62",
                 "shasum": ""
             },
             "require": {
@@ -2541,7 +2541,8 @@
                 "phpstan/phpstan": "^1.10",
                 "phpunit/phpcov": "^9.0",
                 "phpunit/phpunit": "^10.2",
-                "rector/rector": "^0.17.0"
+                "rector/rector": "^0.17.6",
+                "symplify/easy-coding-standard": "^12.0"
             },
             "default-branch": true,
             "type": "library",
@@ -2569,7 +2570,7 @@
                 "source": "https://github.com/zisato/event-sourcing/tree/main",
                 "issues": "https://github.com/zisato/event-sourcing/issues"
             },
-            "time": "2023-08-16T14:42:06+00:00"
+            "time": "2023-10-30T20:58:53+00:00"
         }
     ],
     "packages-dev": [
@@ -2925,16 +2926,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.29",
+            "version": "1.10.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "ee5d8f2d3977fb09e55603eee6fb53bdd76ee9c1"
+                "reference": "93c84b5bf7669920d823631e39904d69b9c7dc5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/ee5d8f2d3977fb09e55603eee6fb53bdd76ee9c1",
-                "reference": "ee5d8f2d3977fb09e55603eee6fb53bdd76ee9c1",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/93c84b5bf7669920d823631e39904d69b9c7dc5d",
+                "reference": "93c84b5bf7669920d823631e39904d69b9c7dc5d",
                 "shasum": ""
             },
             "require": {
@@ -2983,7 +2984,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-14T13:24:11+00:00"
+            "time": "2023-10-30T14:48:31+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -4570,5 +4571,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

@@ -44,10 +44,10 @@ phpstan:
 	@$(DOCKER_COMPOSE) run --rm --no-deps php-cli bin/phpstan
 
 rector:
-	@$(DOCKER_COMPOSE) run --rm --no-deps php-cli bin/rector process src
+	@$(DOCKER_COMPOSE) run --rm --no-deps php-cli bin/rector process src --dry-run
 
 ecs:
-	@$(DOCKER_COMPOSE) run --rm --no-deps php-cli bin/ecs check src --fix
+	@$(DOCKER_COMPOSE) run --rm --no-deps php-cli bin/ecs check src
 
 code.quality: rector ecs phpstan
 

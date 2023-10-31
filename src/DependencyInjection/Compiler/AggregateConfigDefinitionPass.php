@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Zisato\EventSourcingBundle\DependencyInjection\Compiler;
 
 use Doctrine\DBAL\Connection;
+use ReflectionNamedType;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -33,7 +34,7 @@ final class AggregateConfigDefinitionPass implements CompilerPassInterface
         $aggregates = $container->getParameter('event_sourcing_bundle.aggregates');
 
         foreach ($aggregates as $aggregateConfig) {
-            if (! $container->findDefinition($aggregateConfig['repository'])) {
+            if (! $container->hasDefinition($aggregateConfig['repository'])) {
                 continue;
             }
 
@@ -126,6 +127,10 @@ final class AggregateConfigDefinitionPass implements CompilerPassInterface
             $reflection = new \ReflectionClass($id);
 
             $method = $reflection->getMethod('upcast');
+            if (!$method->getReturnType() instanceof ReflectionNamedType) {
+                continue;
+            }
+
             $returnTypeName = $method->getReturnType()->getName();
 
             if ($returnTypeName === AbstractEvent::class) {

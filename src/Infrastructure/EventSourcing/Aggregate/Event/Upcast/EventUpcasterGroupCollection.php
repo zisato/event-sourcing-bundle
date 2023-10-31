@@ -7,7 +7,7 @@ use Zisato\EventSourcing\Aggregate\Event\Upcast\UpcasterInterface;
 final class EventUpcasterGroupCollection
 {
     /**
-     * @var array<string, array<EventUpcasterGroup>> $eventUpcasterGroups
+     * @var array<string, array<UpcasterInterface>> $eventUpcasterGroups
      */
     private array $eventUpcasterGroups = [];
 
