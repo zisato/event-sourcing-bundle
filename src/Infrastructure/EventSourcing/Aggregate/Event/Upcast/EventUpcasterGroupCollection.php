@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zisato\EventSourcingBundle\Infrastructure\EventSourcing\Aggregate\Event\Upcast;
 
 use Zisato\EventSourcing\Aggregate\Event\Upcast\UpcasterInterface;
@@ -7,7 +9,7 @@ use Zisato\EventSourcing\Aggregate\Event\Upcast\UpcasterInterface;
 final class EventUpcasterGroupCollection
 {
     /**
-     * @var array<string, array<UpcasterInterface>> $eventUpcasterGroups
+     * @var array<string, array<UpcasterInterface>>
      */
     private array $eventUpcasterGroups = [];
 

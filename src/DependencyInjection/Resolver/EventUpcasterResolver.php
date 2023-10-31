@@ -14,13 +14,18 @@ use Zisato\EventSourcingBundle\DependencyInjection\EventSourcingExtension;
 final class EventUpcasterResolver
 {
     private readonly ContainerBuilder $container;
-    /** @var string[] $upcasterServiceIds */
+
+    /**
+     * @var string[]
+     */
     private readonly array $upcasterServiceIds;
 
     public function __construct(ContainerBuilder $container)
     {
         $this->container = $container;
-        $this->upcasterServiceIds = array_keys($this->container->findTaggedServiceIds(EventSourcingExtension::TAG_EVENT_UPCASTER, true));
+        $this->upcasterServiceIds = array_keys(
+            $this->container->findTaggedServiceIds(EventSourcingExtension::TAG_EVENT_UPCASTER, true)
+        );
     }
 
     /**
@@ -31,13 +36,14 @@ final class EventUpcasterResolver
         $upcasters = [];
 
         foreach ($aggregateRootReflection->getMethods() as $method) {
-            if (!$this->isApplyEventMethod($method)) {
+            if (! $this->isApplyEventMethod($method)) {
                 continue;
             }
 
-            $reflectionType = $method->getParameters()[0]->getType();
+            $reflectionType = $method->getParameters()[0]
+                ->getType();
 
-            if (!$reflectionType instanceof ReflectionNamedType) {
+            if (! $reflectionType instanceof ReflectionNamedType) {
                 continue;
             }
 
@@ -64,13 +70,14 @@ final class EventUpcasterResolver
             return false;
         }
 
-        $argumentTypeReflection = $method->getParameters()[0]->getType();
-        if (!$argumentTypeReflection instanceof ReflectionNamedType) {
+        $argumentTypeReflection = $method->getParameters()[0]
+            ->getType();
+        if (! $argumentTypeReflection instanceof ReflectionNamedType) {
             return false;
         }
 
         $argumentReflectionClass = $this->container->getReflectionClass($argumentTypeReflection->getName());
-        if (!$argumentReflectionClass instanceof ReflectionClass) {
+        if (! $argumentReflectionClass instanceof ReflectionClass) {
             return false;
         }
 
@@ -87,22 +94,21 @@ final class EventUpcasterResolver
             return false;
         }
 
-        if (!$eventReflection->implementsInterface(EventInterface::class)) {
-            return false;
-        }
-
-        return true;
+        return $eventReflection->implementsInterface(EventInterface::class);
     }
 
     private function getEventUpcasters(ReflectionNamedType $reflectionNamedType): array
     {
         $eventReflectionName = $reflectionNamedType->getName();
 
-        return array_filter($this->upcasterServiceIds, function (string $upcasterServiceId) use ($eventReflectionName) {
+        return array_filter($this->upcasterServiceIds, function (string $upcasterServiceId) use (
+            $eventReflectionName
+        ): bool {
             $upcasterReflection = $this->container->getReflectionClass($upcasterServiceId);
 
-            $returnType = $upcasterReflection->getMethod('upcast')->getReturnType();
-            if (!$returnType instanceof ReflectionNamedType) {
+            $returnType = $upcasterReflection->getMethod('upcast')
+                ->getReturnType();
+            if (! $returnType instanceof ReflectionNamedType) {
                 return false;
             }
 

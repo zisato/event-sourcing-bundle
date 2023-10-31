@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Doctrine\DBAL\Connection;
@@ -20,18 +22,15 @@ use Zisato\EventSourcing\Infrastructure\Aggregate\Event\PrivateData\Crypto\DBALS
 use Zisato\EventSourcing\Infrastructure\Aggregate\Event\PrivateData\Repository\DBALPrivateDataRepository;
 
 return static function (ContainerConfigurator $container): void {
-
     $container->services()
-        
+
         ->set(PayloadKeyCollectionByEventInterface::class, PayloadKeyCollectionByEventInterface::class)
         ->alias(PayloadKeyCollectionStrategyInterface::class, PayloadKeyCollectionByEventInterface::class)
 
         ->set(DBALSecretKeyStore::class, DBALSecretKeyStore::class)
-        ->args([
-            service(Connection::class)
-        ])
+        ->args([service(Connection::class)])
         ->alias(SecretKeyStoreInterface::class, DBALSecretKeyStore::class)
-        
+
         ->set(OpenSSLCrypto::class, OpenSSLCrypto::class)
         ->alias(CryptoInterface::class, OpenSSLCrypto::class)
 
@@ -46,16 +45,11 @@ return static function (ContainerConfigurator $container): void {
         ->alias(PayloadValueSerializerInterface::class, JsonPayloadValueSerializer::class)
 
         ->set(DBALPrivateDataRepository::class, DBALPrivateDataRepository::class)
-        ->args([
-            service(Connection::class),
-            service(PayloadValueSerializerInterface::class),
-        ])
+        ->args([service(Connection::class), service(PayloadValueSerializerInterface::class)])
         ->alias(PrivateDataRepositoryInterface::class, DBALPrivateDataRepository::class)
 
         ->set(ExternalPayloadEncoderAdapter::class, ExternalPayloadEncoderAdapter::class)
-        ->args([
-            service(PrivateDataRepositoryInterface::class),
-        ])
+        ->args([service(PrivateDataRepositoryInterface::class)])
 
         ->set(CryptoPayloadEncoderAdapter::class, CryptoPayloadEncoderAdapter::class)
         ->args([

@@ -18,7 +18,9 @@ final class EventDecoratorPass implements CompilerPassInterface
             return;
         }
 
-        $eventDecorators = \array_keys($container->findTaggedServiceIds(EventSourcingExtension::TAG_EVENT_DECORATOR, true));
+        $eventDecorators = \array_keys(
+            $container->findTaggedServiceIds(EventSourcingExtension::TAG_EVENT_DECORATOR, true)
+        );
 
         $eventDecoratorDefinitions = \array_map(static function (string $eventDecorator): Reference {
             return new Reference($eventDecorator);

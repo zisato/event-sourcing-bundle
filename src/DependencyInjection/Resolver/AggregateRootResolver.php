@@ -21,21 +21,22 @@ final class AggregateRootResolver
     public function aggregateRoot(string $repositoryId): ReflectionClass|null
     {
         $repositoryReflection = $this->container->getReflectionClass($repositoryId);
-        if (!$repositoryReflection instanceof ReflectionClass) {
+        if (! $repositoryReflection instanceof ReflectionClass) {
             return null;
         }
 
-        $reflectionType = $repositoryReflection->getMethod('get')->getReturnType();
-        if (!$reflectionType instanceof ReflectionNamedType) {
+        $reflectionType = $repositoryReflection->getMethod('get')
+            ->getReturnType();
+        if (! $reflectionType instanceof ReflectionNamedType) {
             return null;
         }
-    
+
         $aggregateReflection = $this->container->getReflectionClass($reflectionType->getName());
-        if (!$aggregateReflection instanceof ReflectionClass) {
+        if (! $aggregateReflection instanceof ReflectionClass) {
             return null;
         }
 
-        if (!$this->isValidAggregateRoot($aggregateReflection)) {
+        if (! $this->isValidAggregateRoot($aggregateReflection)) {
             return null;
         }
 
@@ -44,7 +45,7 @@ final class AggregateRootResolver
 
     private function isValidAggregateRoot(ReflectionClass $reflection): bool
     {
-        if (!$reflection->implementsInterface(AggregateRootInterface::class)) {
+        if (! $reflection->implementsInterface(AggregateRootInterface::class)) {
             return false;
         }
 

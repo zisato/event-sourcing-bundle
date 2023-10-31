@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Zisato\EventSourcingBundle\DependencyInjection\Compiler;
 
 use Doctrine\DBAL\Connection;
+use ReflectionClass;
 use ReflectionNamedType;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -56,9 +57,7 @@ final class AggregateConfigDefinitionPass implements CompilerPassInterface
         }
 
         if ($config['private_data']) {
-            $eventSerializerDefinition = $this->createPrivateDataPayloadEventSerializer(
-                $eventSerializerDefinition
-            );
+            $eventSerializerDefinition = $this->createPrivateDataPayloadEventSerializer($eventSerializerDefinition);
         }
 
         $container->setDefinition(
@@ -78,7 +77,10 @@ final class AggregateConfigDefinitionPass implements CompilerPassInterface
                 ]
             );
 
-        $container->setDefinition(\sprintf('event_sourcing_bundle.event_store.%s', $config['class']), $eventStoreDefinition);
+        $container->setDefinition(
+            \sprintf('event_sourcing_bundle.event_store.%s', $config['class']),
+            $eventStoreDefinition
+        );
     }
 
     private function createRepository(array $config, ContainerBuilder $container): void
@@ -87,8 +89,12 @@ final class AggregateConfigDefinitionPass implements CompilerPassInterface
 
         if ($repositoryReflection->isSubclassOf(AggregateRootRepository::class)) {
             $repositoryDefinition = $container->findDefinition($config['repository']);
-            $eventBus = $container->hasDefinition(EventBusInterface::class) ? new Reference(EventBusInterface::class) : null;
-            $eventDecorator = $container->hasDefinition(EventDecoratorInterface::class) ? new Reference(EventDecoratorInterface::class) : null;
+            $eventBus = $container->hasDefinition(EventBusInterface::class) ? new Reference(
+                EventBusInterface::class
+            ) : null;
+            $eventDecorator = $container->hasDefinition(EventDecoratorInterface::class) ? new Reference(
+                EventDecoratorInterface::class
+            ) : null;
 
             $repositoryDefinition->setArguments([
                 $config['class'],
@@ -100,8 +106,12 @@ final class AggregateConfigDefinitionPass implements CompilerPassInterface
 
         if ($repositoryReflection->isSubclassOf(AggregateRootRepositoryWithSnapshot::class)) {
             $repositoryDefinition = new Definition(AggregateRootRepository::class);
-            $eventBus = $container->hasDefinition(EventBusInterface::class) ? new Reference(EventBusInterface::class) : null;
-            $eventDecorator = $container->hasDefinition(EventDecoratorInterface::class) ? new Reference(EventDecoratorInterface::class) : null;
+            $eventBus = $container->hasDefinition(EventBusInterface::class) ? new Reference(
+                EventBusInterface::class
+            ) : null;
+            $eventDecorator = $container->hasDefinition(EventDecoratorInterface::class) ? new Reference(
+                EventDecoratorInterface::class
+            ) : null;
 
             $repositoryDefinition->setArguments([
                 $config['class'],
@@ -124,24 +134,26 @@ final class AggregateConfigDefinitionPass implements CompilerPassInterface
         $upcastersGroupedByEventName = [];
 
         foreach ($upcasters as $id) {
-            $reflection = new \ReflectionClass($id);
+            $reflection = new ReflectionClass($id);
 
             $method = $reflection->getMethod('upcast');
-            if (!$method->getReturnType() instanceof ReflectionNamedType) {
+            if (! $method->getReturnType() instanceof ReflectionNamedType) {
                 continue;
             }
 
-            $returnTypeName = $method->getReturnType()->getName();
+            $returnTypeName = $method->getReturnType()
+                ->getName();
 
             if ($returnTypeName === AbstractEvent::class) {
                 continue;
             }
 
-            if (($reflection = new \ReflectionClass($returnTypeName))->isAbstract()) {
+            $eventReflection = new ReflectionClass($returnTypeName);
+            if ($eventReflection->isAbstract()) {
                 continue;
             }
 
-            if (!$reflection->implementsInterface(EventInterface::class)) {
+            if (! $eventReflection->implementsInterface(EventInterface::class)) {
                 continue;
             }
 
@@ -164,7 +176,7 @@ final class AggregateConfigDefinitionPass implements CompilerPassInterface
     {
         return new Definition(PrivateDataEventSerializer::class, [
             $eventSerializerDefinition,
-            new Reference(PrivateDataEventServiceInterface::class)
+            new Reference(PrivateDataEventServiceInterface::class),
         ]);
     }
 }

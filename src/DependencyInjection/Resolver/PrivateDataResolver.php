@@ -23,13 +23,14 @@ final class PrivateDataResolver
     public function privateData(ReflectionClass $aggregateRootReflection): bool
     {
         foreach ($aggregateRootReflection->getMethods() as $method) {
-            if (!$this->isApplyEventMethod($method)) {
+            if (! $this->isApplyEventMethod($method)) {
                 continue;
             }
 
-            $reflectionType = $method->getParameters()[0]->getType();
+            $reflectionType = $method->getParameters()[0]
+                ->getType();
 
-            if (!$reflectionType instanceof ReflectionNamedType) {
+            if (! $reflectionType instanceof ReflectionNamedType) {
                 continue;
             }
 
@@ -58,13 +59,14 @@ final class PrivateDataResolver
             return false;
         }
 
-        $argumentTypeReflection = $method->getParameters()[0]->getType();
-        if (!$argumentTypeReflection instanceof ReflectionNamedType) {
+        $argumentTypeReflection = $method->getParameters()[0]
+            ->getType();
+        if (! $argumentTypeReflection instanceof ReflectionNamedType) {
             return false;
         }
 
         $argumentReflectionClass = $this->container->getReflectionClass($argumentTypeReflection->getName());
-        if (!$argumentReflectionClass instanceof ReflectionClass) {
+        if (! $argumentReflectionClass instanceof ReflectionClass) {
             return false;
         }
 
@@ -81,18 +83,14 @@ final class PrivateDataResolver
             return false;
         }
 
-        if (!$eventReflection->implementsInterface(EventInterface::class)) {
-            return false;
-        }
-
-        return true;
+        return $eventReflection->implementsInterface(EventInterface::class);
     }
 
     private function eventHasPrivateData(ReflectionNamedType $reflectionNamedType): bool
     {
         $eventReflection = $this->container->getReflectionClass($reflectionNamedType->getName());
 
-        if (!$eventReflection instanceof ReflectionClass) {
+        if (! $eventReflection instanceof ReflectionClass) {
             return false;
         }
 

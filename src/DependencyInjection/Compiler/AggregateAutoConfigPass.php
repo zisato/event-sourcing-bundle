@@ -28,7 +28,7 @@ final class AggregateAutoConfigPass implements CompilerPassInterface
         foreach ($repositoryServiceIds as $repositoryServiceId) {
             $aggregateRootReflection = $aggregateRootResolver->aggregateRoot($repositoryServiceId);
 
-            if (!$aggregateRootReflection instanceof ReflectionClass) {
+            if (! $aggregateRootReflection instanceof ReflectionClass) {
                 continue;
             }
 
